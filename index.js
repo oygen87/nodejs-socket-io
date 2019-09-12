@@ -13,7 +13,7 @@ app.use(cors());
  * in-memory database
  *
  * key: string
- * value: Array<{repo: string, message: string, username: string}>
+ * value: Array<{id: string, repo: string, message: string, username: string}>
  */
 const db = {};
 
@@ -29,6 +29,7 @@ app.post("/messages", function(req, res) {
 io.on("connection", function(socket) {
   socket.on("clientMessageEvent", function(payload) {
     if (validatePayload(payload)) {
+      payload.id = (Math.random() * 10) + ""; // generate key
       if (db[payload.repo]) {
         db[payload.repo].push(payload);
         io.emit(`serverMessageEvent:${payload.repo}`, db[payload.repo]);
