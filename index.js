@@ -28,11 +28,7 @@ app.post("/messages", function(req, res) {
 
 io.on("connection", function(socket) {
   socket.on("clientMessageEvent", function(payload) {
-    if (
-      payload.message.trim().length !== 0 &&
-      payload.username.trim().length !== 0 &&
-      payload.repo.trim().length !== 0
-    ) {
+    if (validatePayload(payload)) {
       if (db[payload.repo]) {
         db[payload.repo].push(payload);
         io.emit(`serverMessageEvent:${payload.repo}`, db[payload.repo]);
@@ -47,6 +43,14 @@ io.on("connection", function(socket) {
     // console.log("user disconnected");
   });
 });
+
+const validatePayload = payload => {
+  return (
+    payload.message.trim().length !== 0 &&
+    payload.username.trim().length !== 0 &&
+    payload.repo.trim().length !== 0
+  );
+};
 
 http.listen(SERVER_PORT, function() {
   console.log(`listening on *:${SERVER_PORT}`);
