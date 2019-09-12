@@ -13,7 +13,9 @@ app.use(cors());
  * in-memory database
  *
  * key: string
- * value: Array<{id: string, repo: string, message: string, username: string}>
+ * value: Array<{id?: string, repo: string, message: string, username: string}>
+ * 
+ * id is added server side
  */
 const db = {};
 
