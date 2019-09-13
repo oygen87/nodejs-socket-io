@@ -15,7 +15,7 @@ app.use(cors());
  *
  * key: string
  * value: Array<{id?: string, repo: string, message: string, username: string}>
- *
+ * 
  */
 const db = {};
 
@@ -34,7 +34,7 @@ app.post("/github-events", function(req, res) {
   const url = `https://api.github.com/repos/${user}/${repo}/events`;
   fetch(url)
     .then(res => res.json())
-    .then(json => res.json(json.map(mapEvents).filter()));
+    .then(json => res.json(json.map(mapEvents).filter(filterEvents)));
 });
 
 const mapEvents = e => {
