@@ -29,12 +29,14 @@ app.post("/messages", function(req, res) {
 });
 
 app.post("/github-events", function(req, res) {
-  const user = req.body.repo.split("/")[3];
-  const repo = req.body.repo.split("/")[4];
-  const url = `https://api.github.com/repos/${user}/${repo}/events`;
-  fetch(url)
-    .then(res => res.json())
-    .then(json => res.json(json.map(mapEvents).filter(filterEvents)));
+  if(req.body.repo) {
+    const user = req.body.repo.split("/")[3];
+    const repo = req.body.repo.split("/")[4];
+    const url = `https://api.github.com/repos/${user}/${repo}/events`;
+    fetch(url)
+      .then(res => res.json())
+      .then(json => res.json(json.map(mapEvents).filter(filterEvents)));
+  }
 });
 
 const mapEvents = e => {
