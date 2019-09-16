@@ -6,7 +6,7 @@ var cors = require("cors");
 var fetch = require("node-fetch");
 const dotenv = require("dotenv");
 
-var {mapEvents, filterEvents} = require("./utils/index.js");
+var { mapEvents, filterEvents } = require("./utils/index.js");
 
 dotenv.config();
 
@@ -15,7 +15,7 @@ app.use(cors());
 
 /**
  * in-memory database.
- * 
+ *
  * id is appended server side.
  *
  * key: string
