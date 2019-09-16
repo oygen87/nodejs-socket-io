@@ -13,7 +13,9 @@ app.use(bodyParser.json());
 app.use(cors());
 
 /**
- * in-memory database
+ * in-memory database.
+ * 
+ * id is appended server side.
  *
  * key: string
  * value: Array<{id?: string, repo: string, message: string, username: string}>
