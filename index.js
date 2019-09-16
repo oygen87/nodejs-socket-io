@@ -34,7 +34,7 @@ app.post("/github-events", function(req, res) {
   if(req.body.repo) {
     const user = req.body.repo.split("/")[3];
     const repo = req.body.repo.split("/")[4];
-    const url = `https://api.github.com/repos/${user}/${repo}/events`;
+    const url = `https://api.github.com/repos/${user}/${repo}/events?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}`;
     fetch(url)
       .then(res => res.json())
       .then(json => res.json(json.map(utils.mapEvents).filter(utils.filterEvents)));
