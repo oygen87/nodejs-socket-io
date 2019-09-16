@@ -4,7 +4,7 @@ var io = require("socket.io")(http);
 var bodyParser = require("body-parser");
 var cors = require("cors");
 var fetch = require("node-fetch");
-var utils = require("./utils/index.js");
+var {mapEvents, filterEvents} = require("./utils/index.js");
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -39,7 +39,7 @@ app.post("/github-events", function(req, res) {
       .then(res => res.json())
       .then(json => {
         try {
-          res.json(json.map(utils.mapEvents).filter(utils.filterEvents));
+          res.json(json.map(mapEvents).filter(filterEvents));
         } catch (error) {
           res.status(404).send("Repository not found");
         }
