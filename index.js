@@ -5,7 +5,7 @@ var bodyParser = require("body-parser");
 var cors = require("cors");
 var fetch = require("node-fetch");
 var utils = require("./utils/index.js");
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ app.use(cors());
  *
  * key: string
  * value: Array<{id?: string, repo: string, message: string, username: string}>
- * 
+ *
  */
 const db = {};
 
@@ -31,13 +31,19 @@ app.post("/messages", function(req, res) {
 });
 
 app.post("/github-events", function(req, res) {
-  if(req.body.repo) {
+  if (req.body.repo) {
     const user = req.body.repo.split("/")[3];
     const repo = req.body.repo.split("/")[4];
     const url = `https://api.github.com/repos/${user}/${repo}/events?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}`;
     fetch(url)
       .then(res => res.json())
-      .then(json => res.json(json.map(utils.mapEvents).filter(utils.filterEvents)));
+      .then(json => {
+        try {
+          res.json(json.map(utils.mapEvents).filter(utils.filterEvents));
+        } catch (error) {
+          res.status(404).send("Repository not found");
+        }
+      });
   }
 });
 
