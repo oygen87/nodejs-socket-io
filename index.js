@@ -4,8 +4,9 @@ var io = require("socket.io")(http);
 var bodyParser = require("body-parser");
 var cors = require("cors");
 var fetch = require("node-fetch");
-var {mapEvents, filterEvents} = require("./utils/index.js");
 const dotenv = require("dotenv");
+
+var {mapEvents, filterEvents} = require("./utils/index.js");
 
 dotenv.config();
 
