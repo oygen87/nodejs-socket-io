@@ -5,8 +5,9 @@ var bodyParser = require("body-parser");
 var cors = require("cors");
 var fetch = require("node-fetch");
 var utils = require("./utils/index.js");
+const dotenv = require('dotenv');
 
-const SERVER_PORT = 4000;
+dotenv.config();
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -67,6 +68,6 @@ const validatePayload = payload => {
   );
 };
 
-http.listen(SERVER_PORT, function() {
-  console.log(`listening on *:${SERVER_PORT}`);
+http.listen(process.env.SERVER_PORT, function() {
+  console.log(`listening on *:${process.env.SERVER_PORT}`);
 });
