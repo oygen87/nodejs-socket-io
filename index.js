@@ -4,9 +4,13 @@ var io = require("socket.io")(http);
 var bodyParser = require("body-parser");
 var cors = require("cors");
 var fetch = require("node-fetch");
-const dotenv = require("dotenv");
+var dotenv = require("dotenv");
 
-var { mapEvents, filterEvents } = require("./utils/index.js");
+const {
+  mapEvents,
+  filterEvents,
+  validatePayload
+} = require("./utils/index.js");
 
 dotenv.config();
 
@@ -68,14 +72,6 @@ io.on("connection", function(socket) {
     // console.log("user disconnected");
   });
 });
-
-const validatePayload = payload => {
-  return (
-    payload.message.trim().length !== 0 &&
-    payload.username.trim().length !== 0 &&
-    payload.repo.trim().length !== 0
-  );
-};
 
 http.listen(process.env.SERVER_PORT, function() {
   console.log(`listening on *:${process.env.SERVER_PORT}`);
