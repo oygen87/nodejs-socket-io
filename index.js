@@ -11,19 +11,22 @@ const initializeSocketIO = require("./socket-io/socket-io.js");
 dotenv.config();
 
 /**
- *
- * Messages are stored under collections
- * where name is a Github repository url.
+ * MongoDB Atlas Cloud Database.
+ * 
+ * Each Chat Message is a record.
+ * Messages belongs to a Github Repository.
+ * All Github Repositories are collections.
  *
  * Schema for messages :
- *
- * id: Number,
- * created: String <YYYY-MM-DDTHH:MM:SSZ>
- * actor: String,
- * action: String,
- * avatar: String,
- * type: String,
- * url: String,
+ * {
+ *  _id: Number,
+ *  created: String <YYYY-MM-DDTHH:MM:SSZ>
+ *  actor: String,
+ *  action: String,
+ *  avatar: String,
+ *  type: String,
+ *  url: String,
+ * }
  *
  */
 
