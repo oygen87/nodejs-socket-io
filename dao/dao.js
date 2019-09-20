@@ -45,8 +45,8 @@ exports.findAllFromCollection = async collectionName => {
   const db = client.db(`${process.env.DATABASE_NAME}`);
   try {
     const collection = db.collection(collectionName);
-    const result = await collection.find({}).toArray();
-    return result;
+    const result = await collection.find({}).sort({"_id": -1}).limit(100).toArray();
+    return result.reverse();
   } catch (err) {
     console.log(err);
   } finally {
