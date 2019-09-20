@@ -12,7 +12,11 @@ const {
   validatePayload
 } = require("./utils/utils.js");
 
-const { createDatabase, insertRecord, findAllFromCollection} = require("./dao/dao.js");
+const {
+  createDatabase,
+  insertRecord,
+  findAllFromCollection
+} = require("./dao/dao.js");
 
 dotenv.config();
 
