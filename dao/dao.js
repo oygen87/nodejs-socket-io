@@ -17,7 +17,7 @@ exports.createDatabase = async name => {
   if (!client) return;
 
   const db = client.db(name);
-  console.log(`Database created : ${process.env.DATABASE_NAME}`);
+  console.log(`Database created with name: ${name}`);
   client.close();
 };
 
