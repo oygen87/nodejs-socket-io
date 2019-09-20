@@ -1,72 +1,23 @@
-var app = require("express")();
-var http = require("http").createServer(app);
-var io = require("socket.io")(http);
-var bodyParser = require("body-parser");
-var cors = require("cors");
-var fetch = require("node-fetch");
-var dotenv = require("dotenv");
-const mongo = require("mongodb").MongoClient;
+const app = require("express")();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const fetch = require("node-fetch");
+const dotenv = require("dotenv");
 
 const {
   mapEvents,
   filterEvents,
   validatePayload
-} = require("./utils/index.js");
+} = require("./utils/utils.js");
+
+const { createDatabase, insertRecord, findAllFromCollection} = require("./dao/dao.js");
 
 dotenv.config();
 
 app.use(bodyParser.json());
 app.use(cors());
-
-const url =
-  "mongodb+srv://backendadmin:secretpasswordforbackendadmin@cluster0-f5tzt.mongodb.net/test?retryWrites=true&w=majority";
-
-const settings = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-};
-
-const createDatabase = async name => {
-  const client = await mongo.connect(url, settings);
-  if (!client) return;
-
-  const db = client.db(name);
-  console.log(`Database created : ${process.env.DATABASE_NAME}`);
-  client.close();
-};
-
-const insertRecord = async (collectionName, record) => {
-  const client = await mongo.connect(url, settings);
-
-  if (!client) return;
-
-  const db = client.db(`${process.env.DATABASE_NAME}`);
-  try {
-    const collection = db.collection(collectionName);
-    await collection.insertOne(record);
-  } catch (err) {
-    console.log(err);
-  } finally {
-    client.close();
-  }
-};
-
-const findAllFromCollection = async collectionName => {
-  const client = await mongo.connect(url, settings);
-
-  if (!client) return;
-
-  const db = client.db(`${process.env.DATABASE_NAME}`);
-  try {
-    const collection = db.collection(collectionName);
-    const result = await collection.find({}).toArray();
-    return result;
-  } catch (err) {
-    console.log(err);
-  } finally {
-    client.close();
-  }
-};
 
 createDatabase(`${process.env.DATABASE_NAME}`);
 
