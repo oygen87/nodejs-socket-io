@@ -24,11 +24,12 @@ app.use(bodyParser.json());
 app.use(cors());
 
 /**
+ *
  * Messages are stored under different collections
  * where the collection name is Github repository url.
- * 
+ *
  * Schema for messages :
- * 
+ *
  * id: Number,
  * created: String <YYYY-MM-DDTHH:MM:SSZ>
  * actor: String,
@@ -36,7 +37,7 @@ app.use(cors());
  * avatar: String,
  * type: String,
  * url: String,
- * 
+ *
  */
 
 createDatabase(`${process.env.DATABASE_NAME}`);
