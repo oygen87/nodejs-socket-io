@@ -74,5 +74,5 @@ io.on("connection", function(socket) {
 });
 
 http.listen(process.env.PORT || 4000, function() {
-  console.log(`listening on *:${process.env.SERVER_PORT}`);
+  console.log(`listening on *:${process.env.PORT}`);
 });
