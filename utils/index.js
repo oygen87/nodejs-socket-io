@@ -1,6 +1,6 @@
 var exports = (module.exports = {});
 exports.mapEvents = e => {
-  const id = e.id;
+  const id = e.id + "";
   const actor = e.actor.display_login;
   const avatar = e.actor.avatar_url;
   const created = e.created_at;

@@ -5,6 +5,7 @@ var bodyParser = require("body-parser");
 var cors = require("cors");
 var fetch = require("node-fetch");
 var dotenv = require("dotenv");
+const mongo = require("mongodb").MongoClient;
 
 const {
   mapEvents,
@@ -17,24 +18,62 @@ dotenv.config();
 app.use(bodyParser.json());
 app.use(cors());
 
-/**
- * in-memory database.
- *
- * id is appended server side.
- *
- * key: string
- * value: Array<{id?: string, repo: string, message: string, username: string}>
- *
- */
-const db = {};
+const url =
+  "mongodb+srv://backendadmin:secretpasswordforbackendadmin@cluster0-f5tzt.mongodb.net/test?retryWrites=true&w=majority";
 
-app.post("/messages", function(req, res) {
-  if (db[req.body.repo]) {
-    res.json({ data: db[req.body.repo] });
-  } else {
-    db[req.body.repo] = [];
-    res.json({ data: db[req.body.repo] });
+const settings = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+};
+
+const createDatabase = async name => {
+  const client = await mongo.connect(url, settings);
+  if (!client) return;
+
+  const db = client.db(name);
+  console.log(`Database created : ${process.env.DATABASE_NAME}`);
+  client.close();
+};
+
+const insertRecord = async (collectionName, record) => {
+  const client = await mongo.connect(url, settings);
+
+  if (!client) return;
+
+  const db = client.db(`${process.env.DATABASE_NAME}`);
+  try {
+    const collection = db.collection(collectionName);
+    await collection.insertOne(record);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
   }
+};
+
+const findAllFromCollection = async collectionName => {
+  const client = await mongo.connect(url, settings);
+
+  if (!client) return;
+
+  const db = client.db(`${process.env.DATABASE_NAME}`);
+  try {
+    const collection = db.collection(collectionName);
+    const result = await collection.find({}).toArray();
+    return result;
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+  }
+};
+
+createDatabase(`${process.env.DATABASE_NAME}`);
+
+app.post("/messages", async function(req, res) {
+  findAllFromCollection(req.body.repo).then(result => {
+    res.json({ data: result });
+  });
 });
 
 app.post("/github-events", function(req, res) {
@@ -55,17 +94,11 @@ app.post("/github-events", function(req, res) {
 });
 
 io.on("connection", function(socket) {
-  socket.on("clientMessageEvent", function(payload) {
+  socket.on("clientMessageEvent", async function(payload) {
     if (validatePayload(payload)) {
-      payload.id = Math.random() + "";
-      if (db[payload.repo]) {
-        db[payload.repo].push(payload);
-        io.emit(`serverMessageEvent:${payload.repo}`, db[payload.repo]);
-      } else {
-        db[payload.repo] = [];
-        db[payload.repo].push(payload);
-        io.emit(`serverMessageEvent:${payload.repo}`, db[payload.repo]);
-      }
+      await insertRecord(payload.repo, payload);
+      const repo = await findAllFromCollection(payload.repo);
+      io.emit(`serverMessageEvent:${payload.repo}`, repo);
     }
   });
   socket.on("disconnect", function() {
