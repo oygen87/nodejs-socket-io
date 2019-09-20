@@ -23,6 +23,22 @@ dotenv.config();
 app.use(bodyParser.json());
 app.use(cors());
 
+/**
+ * Messages are stored under different collections
+ * where the collection name is Github repository url.
+ * 
+ * Schema for messages :
+ * 
+ * id: Number,
+ * created: String <YYYY-MM-DDTHH:MM:SSZ>
+ * actor: String,
+ * action: String,
+ * avatar: String,
+ * type: String,
+ * url: String,
+ * 
+ */
+
 createDatabase(`${process.env.DATABASE_NAME}`);
 
 app.post("/messages", async function(req, res) {
