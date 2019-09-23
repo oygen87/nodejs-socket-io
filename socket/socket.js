@@ -1,5 +1,6 @@
-const initializeSocketIO = http => {
+const setupSocket = http => {
   const io = require("socket.io")(http);
+
   const { validatePayload } = require("../utils/utils.js");
   const { insertRecord, findAllFromCollection } = require("../dao/dao.js");
 
@@ -11,10 +12,7 @@ const initializeSocketIO = http => {
         io.emit(`serverMessageEvent:${payload.repo}`, messages);
       }
     });
-    socket.on("disconnect", function() {
-      // console.log("user disconnected");
-    });
   });
 };
 
-module.exports = initializeSocketIO;
+module.exports = setupSocket;

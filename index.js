@@ -6,7 +6,7 @@ const dotenv = require("dotenv");
 
 const { createDatabase } = require("./dao/dao.js");
 const routes = require("./routes/routes.js");
-const initializeSocketIO = require("./socket-io/socket-io.js");
+const setupSocket = require("./socket/socket.js");
 
 dotenv.config();
 
@@ -37,7 +37,7 @@ app.use("/", routes);
 
 createDatabase(`${process.env.DATABASE_NAME}`);
 
-initializeSocketIO(http);
+setupSocket(http);
 
 http.listen(process.env.PORT || 4000, function() {
   console.log(`listening on *:${process.env.PORT}`);

@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "docker-build": "docker build -t docker-nodejs-socket .",
+    "docker-start": "docker run -d -p 9000:4000 -v $(pwd):/app docker-nodejs-socket",
+    "docker-stop": "docker stop $(docker ps -q --filter ancestor=docker-nodejs-socket )"
   },
   "keywords": [],
   "author": "",
