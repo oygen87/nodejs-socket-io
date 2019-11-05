@@ -1,5 +1,4 @@
-var exports = (module.exports = {});
-exports.mapEvents = e => {
+const mapEvents = e => {
   const id = e.id + "";
   const actor = e.actor.display_login;
   const avatar = e.actor.avatar_url;
@@ -38,7 +37,7 @@ exports.mapEvents = e => {
   };
 };
 
-exports.filterEvents = e => {
+const filterEvents = e => {
   return (
     e.type !== "Watch" &&
     e.type !== "Fork" &&
@@ -47,10 +46,16 @@ exports.filterEvents = e => {
   );
 };
 
-exports.validatePayload = payload => {
+const validatePayload = payload => {
   return (
     payload.message.trim().length !== 0 &&
     payload.username.trim().length !== 0 &&
     payload.repo.trim().length !== 0
   );
 };
+
+module.exports = {
+  mapEvents,
+  filterEvents,
+  validatePayload
+}
