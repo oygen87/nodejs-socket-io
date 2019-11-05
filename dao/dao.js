@@ -1,8 +1,6 @@
 const mongo = require("mongodb").MongoClient;
 const dotenv = require("dotenv");
 
-var exports = (module.exports = {});
-
 dotenv.config();
 
 const url = `${process.env.DATABASE_URL}`;
@@ -12,7 +10,7 @@ const settings = {
   useUnifiedTopology: true
 };
 
-exports.createDatabase = async name => {
+const createDatabase = async name => {
   const client = await mongo.connect(url, settings);
   if (!client) return;
 
@@ -21,7 +19,7 @@ exports.createDatabase = async name => {
   client.close();
 };
 
-exports.insertRecord = async (collectionName, record) => {
+const insertRecord = async (collectionName, record) => {
   const client = await mongo.connect(url, settings);
 
   if (!client) return;
@@ -37,7 +35,7 @@ exports.insertRecord = async (collectionName, record) => {
   }
 };
 
-exports.findAllFromCollection = async collectionName => {
+const findAllFromCollection = async collectionName => {
   const client = await mongo.connect(url, settings);
 
   if (!client) return;
@@ -53,3 +51,9 @@ exports.findAllFromCollection = async collectionName => {
     client.close();
   }
 };
+
+module.exports = {
+  createDatabase,
+  insertRecord,
+  findAllFromCollection
+}
