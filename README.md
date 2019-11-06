@@ -1,5 +1,7 @@
 # Github Collab
 
+Personal project
+
 Backend for Github collab app
 
 Messages are stored in MongoDB Atlas
