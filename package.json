@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "nodemon index.js",
     "docker-build": "docker build -t docker-nodejs-socket .",
     "docker-start": "docker run -d -p 9000:4000 -v $(pwd):/app docker-nodejs-socket",
@@ -23,6 +23,7 @@
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
+    "jest": "^24.9.0",
     "nodemon": "^1.19.2"
   }
 }
