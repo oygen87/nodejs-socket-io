@@ -1,4 +1,4 @@
-const { validatePayload, filterEvents } = require("../utils/utils");
+const { validatePayload, filterEvents, mapEvents } = require("../utils/utils");
 
 test("validatePayload", () => {
   const payload_1 = {
