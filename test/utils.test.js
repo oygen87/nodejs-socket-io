@@ -1,4 +1,4 @@
-const { validatePayload } = require("../utils/utils");
+const { validatePayload, filterEvents } = require("../utils/utils");
 
 test("validatePayload", () => {
   const payload_1 = {
@@ -38,4 +38,27 @@ test("validatePayload", () => {
   expect(() => {
     validatePayload(payload_5);
   }).toThrow();
+});
+
+test("filterEvents", () => {
+    const event_1 = {
+        type: "Comment"
+    }
+    const event_2 = {
+        type: "Watch"
+    }
+    const event_3 = {
+        type: "Fork"
+    }
+    const event_4 = {
+        type: "Follow"
+    }
+    const event_5 = {
+        type: "Download"
+    }
+    expect(filterEvents(event_1)).toBe(true);
+    expect(filterEvents(event_2)).toBe(false);
+    expect(filterEvents(event_3)).toBe(false);
+    expect(filterEvents(event_4)).toBe(false);
+    expect(filterEvents(event_5)).toBe(false);
 });
