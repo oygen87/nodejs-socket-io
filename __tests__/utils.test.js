@@ -15,7 +15,7 @@ test("validatePayload", () => {
   };
   expect(validatePayload(payload_2)).toBe(false);
 
-  const payload_3 = { 
+  const payload_3 = {
     username: "",
     message: "",
     repo: "https://github.com/facebook/react"
@@ -38,26 +38,30 @@ test("validatePayload", () => {
 });
 
 test("filterEvents", () => {
-    const event_1 = {
-        type: "Comment"
-    }
-    expect(filterEvents(event_1)).toBe(true);
-    const event_2 = {
-        type: "Watch"
-    }
-    expect(filterEvents(event_2)).toBe(false);
-    const event_3 = {
-        type: "Fork"
-    }
-    expect(filterEvents(event_3)).toBe(false);
-    const event_4 = {
-        type: "Follow"
-    }
-    expect(filterEvents(event_4)).toBe(false);
-    const event_5 = {
-        type: "Download"
-    }
-    expect(filterEvents(event_5)).toBe(false);
+  const event_1 = {
+    type: "Comment"
+  };
+  expect(filterEvents(event_1)).toBe(true);
+
+  const event_2 = {
+    type: "Watch"
+  };
+  expect(filterEvents(event_2)).toBe(false);
+
+  const event_3 = {
+    type: "Fork"
+  };
+  expect(filterEvents(event_3)).toBe(false);
+
+  const event_4 = {
+    type: "Follow"
+  };
+  expect(filterEvents(event_4)).toBe(false);
+
+  const event_5 = {
+    type: "Download"
+  };
+  expect(filterEvents(event_5)).toBe(false);
 });
 
 test("mapEvents", () => {
@@ -75,11 +79,13 @@ test("mapEvents", () => {
         html_url: "https://github.com/facebook/react/issues/123"
       }
     }
-  }
+  };
   const mappedEvents_1 = [event_1].map(mapEvents);
   expect(mappedEvents_1[0].action).toBe(null);
   expect(mappedEvents_1[0].type).toBe("commented issue");
-  expect(mappedEvents_1[0].url).toBe("https://github.com/facebook/react/issues/123");
+  expect(mappedEvents_1[0].url).toBe(
+    "https://github.com/facebook/react/issues/123"
+  );
   expect(typeof mappedEvents_1[0].id).toBe("string");
 
   const event_2 = {
@@ -96,10 +102,12 @@ test("mapEvents", () => {
         html_url: "https://github.com/facebook/react/pulls/123"
       }
     }
-  }
+  };
   const mappedEvents_2 = [event_2].map(mapEvents);
   expect(mappedEvents_2[0].action).toBe("opened");
   expect(mappedEvents_2[0].type).toBe("PullRequest");
-  expect(mappedEvents_2[0].url).toBe("https://github.com/facebook/react/pulls/123");
+  expect(mappedEvents_2[0].url).toBe(
+    "https://github.com/facebook/react/pulls/123"
+  );
   expect(typeof mappedEvents_2[0].id).toBe("string");
 });
